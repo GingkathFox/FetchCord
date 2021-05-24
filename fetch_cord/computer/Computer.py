@@ -378,10 +378,13 @@ class Computer:
         if self.os != "linux":
             self.laptop = False
         else:
-            for i in os.listdir("/sys/class/power_supply"):
-                if i.startswith("BAT"):
-                    self.laptop = True
-                    break
+            try:
+                for i in os.listdir("/sys/class/power_supply"):
+                    if i.startswith("BAT"):
+                        self.laptop = True
+                        break
+            except os.EX_NOTFOUND:
+                self.laptop = False # If, for some reason, /sys/class/power_supply doesn't exist, default to desktop
 
         return self.laptop
 
