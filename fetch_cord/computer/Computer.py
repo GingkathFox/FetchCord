@@ -286,7 +286,15 @@ class Computer:
         }
 
         self.idsMap = get_infos()
-        self.uptime = psutil.boot_time()
+
+        try:
+            self.uptime = psutil.boot_time() # Try and grab the boot time the normal way
+        except:
+            try:
+                with open('/proc/uptime') as uptime:
+                    self.uptime = int(uptime.readlines()) # Try and grab from /proc/uptime
+            except:
+                self.uptime = 0 # Fuck it, can't grab the time, use zero
 
         self.detect_os()
         self.detect_laptop()
