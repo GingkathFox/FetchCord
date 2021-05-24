@@ -292,7 +292,7 @@ class Computer:
         except:
             try:
                 with open('/proc/uptime') as uptime:
-                    self.uptime = int(uptime.readlines()) # Try and grab from /proc/uptime
+                    self.uptime = float(uptime.readlines()) # Try and grab from /proc/uptime
             except:
                 self.uptime = 0 # Fuck it, can't grab the time, use zero
 
@@ -383,7 +383,7 @@ class Computer:
                     if i.startswith("BAT"):
                         self.laptop = True
                         break
-            except os.EX_NOTFOUND:
+            except:
                 self.laptop = False # If, for some reason, /sys/class/power_supply doesn't exist, default to desktop
 
         return self.laptop
